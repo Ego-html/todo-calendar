@@ -1,0 +1,12 @@
+<div class="modal-overlay" (click)="clickOnOverlay($event)">
+  <div class="modal-window" (click)="$event.stopPropagation()">
+    <h2>Tasks for {{ selectedDate }}</h2>
+    <div class="tasks-list">
+      Place for out tasks...
+    </div>
+    <div class="new-task">
+      <input type="text" placeholder="Enter your task">
+      <button class="close-btn" (click)="closeModal()">X</button>
+    </div>
+  </div>
+</div>
