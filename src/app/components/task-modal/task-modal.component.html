@@ -1,5 +1,6 @@
 <div class="modal-overlay" (click)="clickOnOverlay($event)">
   <div class="modal-window" (click)="$event.stopPropagation()">
+    <h1 id="modal-title">{{title}}</h1>
     <h2>Tasks for {{ selectedDate }}</h2>
     <div class="tasks-list">
       Place for out tasks...

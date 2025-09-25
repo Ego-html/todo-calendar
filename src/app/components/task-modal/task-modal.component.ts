@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {TaskService} from "../../services/task.service";
+import {ModalService} from "../../services/modal.service";
 
 @Component({
   selector: 'app-task-modal',
@@ -10,17 +10,14 @@ import {TaskService} from "../../services/task.service";
 })
 export class TaskModalComponent {
   @Input() selectedDate: string = '';
-  @Output() close = new EventEmitter<void>()
+  @Input() title: string = '';
 
-  constructor(private TaskService: TaskService) {
+  constructor(private modalService: ModalService) {
   }
 
   ngOnInit() {
-
     document.addEventListener('keydown', this.handleKeyPress)
-
     if (this.selectedDate) {
-
     }
   }
 
@@ -32,8 +29,6 @@ export class TaskModalComponent {
     if (event.key === 'Escape') {
       this.closeModal();
     }
-
-
   }
 
   clickOnOverlay(event: MouseEvent) {
@@ -43,6 +38,6 @@ export class TaskModalComponent {
   }
 
   closeModal() {
-    this.close.emit();
+    this.modalService.closeModal();
   }
 }

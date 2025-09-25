@@ -3,6 +3,8 @@ import {RouterOutlet} from '@angular/router';
 import {CalendarViewComponent} from "./components/calendar-view/calendar-view.component";
 import {TaskModalComponent} from "./components/task-modal/task-modal.component";
 import {NgIf} from "@angular/common";
+import {ModalService} from "./services/modal.service";
+import {ModalState} from "./models/modal-state";
 
 @Component({
   selector: 'app-root',
@@ -12,15 +14,19 @@ import {NgIf} from "@angular/common";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'todo-calendar';
+  title = 'Todo-calendar';
+
+  constructor(private modalService: ModalService) {
+  }
 
   isModalOpen = false;
   selectedDate = '';
 
-  openModal(date: string) {
-    this.selectedDate = date;
-    this.isModalOpen = true;
-    console.log('In modal window ', this.selectedDate);
+  ngOnInit() {
+    this.modalService.modal$.subscribe((value: ModalState) => {
+      this.isModalOpen = value.isOpen
+      this.selectedDate = value.date;
+    })
   }
 
   closeModal() {

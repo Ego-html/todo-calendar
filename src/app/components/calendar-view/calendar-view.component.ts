@@ -44,12 +44,9 @@ export class CalendarViewComponent {
     }
   }
 
-  @Output() dayClick = new EventEmitter<string>();
-
-  onDayClick(date: string) {
-    console.log('Date from child:', date)
-    this.dayClick.emit(date);
-  }
+  // onDayClick(date: string) {
+  //   this.dayClick.emit(date);
+  // }
 }
 
 

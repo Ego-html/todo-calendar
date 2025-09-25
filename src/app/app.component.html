@@ -1,7 +1,8 @@
-<app-calendar-view (dayClick)="openModal($event)"></app-calendar-view>
+<app-calendar-view></app-calendar-view>
 <app-task-modal
-  *ngIf="isModalOpen"
-  [selectedDate]="selectedDate"
-  (close)="closeModal()"
-></app-task-modal>
+  *ngIf = isModalOpen
+  [selectedDate] = 'selectedDate'
+  [title] = 'title'
+  (close) = 'closeModal()'  >
+</app-task-modal>
 
