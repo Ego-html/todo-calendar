@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {ModalService} from "../../services/modal.service";
+import {ModalObservableService} from "../../services/modal-observable.service";
 
 @Component({
   selector: 'app-day-cell',
@@ -15,7 +16,9 @@ export class DayCellComponent {
   @Input() dayDate: string = '';
   @Input() taskCount: number = 0;
 
-  constructor(private modalService: ModalService) {
+  constructor(
+    private modalService: ModalService,
+    private modalObservableService: ModalObservableService) {
   }
 
   get dayNumber(): number {
@@ -23,6 +26,7 @@ export class DayCellComponent {
   }
 
   onDayClick() {
-    this.modalService.openModal(this.dayDate);
+    // this.modalService.openModal(this.dayDate);
+    this.modalObservableService.openModal(this.dayDate);
   }
 }

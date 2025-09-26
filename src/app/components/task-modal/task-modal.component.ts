@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from "../../services/modal.service";
+import {ModalObservableService} from "../../services/modal-observable.service";
 
 @Component({
   selector: 'app-task-modal',
@@ -12,7 +12,7 @@ export class TaskModalComponent {
   @Input() selectedDate: string = '';
   @Input() title: string = '';
 
-  constructor(private modalService: ModalService) {
+  constructor(private modalObservableService: ModalObservableService) {
   }
 
   ngOnInit() {
@@ -38,6 +38,6 @@ export class TaskModalComponent {
   }
 
   closeModal() {
-    this.modalService.closeModal();
+    this.modalObservableService.closeModal();
   }
 }

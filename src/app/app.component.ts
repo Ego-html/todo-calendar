@@ -5,6 +5,7 @@ import {TaskModalComponent} from "./components/task-modal/task-modal.component";
 import {NgIf} from "@angular/common";
 import {ModalService} from "./services/modal.service";
 import {ModalState} from "./models/modal-state";
+import {ModalObservableService} from "./services/modal-observable.service";
 
 @Component({
   selector: 'app-root',
@@ -13,19 +14,21 @@ import {ModalState} from "./models/modal-state";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
+
 export class AppComponent {
   title = 'Todo-calendar';
 
-  constructor(private modalService: ModalService) {
+  constructor(private modalObservableService: ModalObservableService) {
   }
 
   isModalOpen = false;
   selectedDate = '';
 
   ngOnInit() {
-    this.modalService.modal$.subscribe((value: ModalState) => {
+    this.modalObservableService.modalState$.subscribe((value: ModalState) => {
       this.isModalOpen = value.isOpen
       this.selectedDate = value.date;
+
     })
   }
 

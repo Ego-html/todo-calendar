@@ -43,10 +43,6 @@ export class CalendarViewComponent {
       )
     }
   }
-
-  // onDayClick(date: string) {
-  //   this.dayClick.emit(date);
-  // }
 }
 
 
