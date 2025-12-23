@@ -13,7 +13,7 @@ import {ModalService} from "../../services/modal.service";
 })
 export class DayCellComponent {
   @Input() dayDate: string = '';
-  @Input() taskCount: number = 0;
+  @Input() tasksCount: number = 0;
 
   constructor(private modalService: ModalService) {
   }

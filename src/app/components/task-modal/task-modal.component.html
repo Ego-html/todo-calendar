@@ -1,12 +1,23 @@
 <div class="modal-overlay" (click)="clickOnOverlay($event)">
   <div class="modal-window" (click)="$event.stopPropagation()">
-    <h1 id="modal-title">{{title}}</h1>
+    <h1 id="modal-title">{{ title }}</h1>
     <h2>Tasks for {{ selectedDate }}</h2>
+    <div *ngFor="let obj of tasksForDate">
+      <input
+        type="checkbox"
+        id="check-box"
+        [checked]="obj.isCompleted"
+        (change) = "onCheckBoxChange(obj.date, obj.id)"
+      >
+      <label for="check-box">{{ obj.text }}</label>
+      <button class="delete-task" (click)="deleteTask(obj.date, obj.id)">X</button>
+    </div>
     <div class="tasks-list">
       Place for out tasks...
     </div>
     <div class="new-task">
-      <input type="text" placeholder="Enter your task">
+      <input type="text" placeholder="Enter your task" [(ngModel)]='inputValue'>
+      <button class="add-task" (click)="addTask()">Save</button>
       <button class="close-btn" (click)="closeModal()">X</button>
     </div>
   </div>

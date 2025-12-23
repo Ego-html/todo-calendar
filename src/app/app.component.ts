@@ -13,6 +13,7 @@ import {ModalState} from "./models/modal-state";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
+
 export class AppComponent {
   title = 'Todo-calendar';
 

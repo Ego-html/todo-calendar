@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Task} from '../models/task.model';
+import {Subject} from "rxjs";
 
 const STORAGE_KEY = 'todo-calendar-data';
 
@@ -11,9 +12,12 @@ export class TaskService {
   constructor() {
   }
 
+  public signal = new Subject<void>();
+
   getTasksForDate(date: string): Task[] {
     const allData = this._loadFromStorage();
     const taskForDate = allData[date];
+    console.log(taskForDate);
     return taskForDate || [];
   }
 
@@ -37,10 +41,10 @@ export class TaskService {
     this.saveForDate(date, tasksForDate);
   }
 
-  toggleTaskCompletion(idTask: string, date: string) {
+  toggleTaskCompletion(date: string, taskId: string) {
     const allData = this.getTasksForDate(date);
 
-    const taskToUpdate = allData.find((task) => task.id === idTask);
+    const taskToUpdate = allData.find((task) => task.id === taskId);
 
     if (taskToUpdate) {
       taskToUpdate.isCompleted = !taskToUpdate.isCompleted;
@@ -53,12 +57,14 @@ export class TaskService {
     const allDate = this._loadFromStorage();
 
     allDate[date] = tasks;
+
     if (tasks.length === 0) {
       delete allDate[date];
     } else {
       allDate[date] = tasks;
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(allDate));
+    this.signal.next();
   }
 
   deleteTask(date: string, taskId: string) {

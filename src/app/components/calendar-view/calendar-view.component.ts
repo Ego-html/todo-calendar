@@ -13,6 +13,7 @@ import {NgForOf} from "@angular/common";
   templateUrl: './calendar-view.component.html',
   styleUrl: './calendar-view.component.css'
 })
+
 export class CalendarViewComponent {
 
   constructor(private taskService: TaskService) {
@@ -20,6 +21,9 @@ export class CalendarViewComponent {
 
   ngOnInit() {
     this.createCalendarDates();
+    this.taskService.signal.subscribe(() => {
+      this.createCalendarDates()
+    })
   }
 
   days: { date: string, tasksCount: number } [] = [];
@@ -43,10 +47,6 @@ export class CalendarViewComponent {
       )
     }
   }
-
-  // onDayClick(date: string) {
-  //   this.dayClick.emit(date);
-  // }
 }
 
 
