@@ -4,7 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {TaskService} from "../../services/task.service";
 import {Task} from "../../models/task.model";
 import {NgForOf} from "@angular/common";
-import {Subject, takeUntil} from "rxjs";
+import {map, Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-task-modal',
@@ -30,12 +30,7 @@ export class TaskModalComponent {
 
   ngOnInit() {
     document.addEventListener('keydown', this.handleKeyPress);
-    this.showTasksOnModalWindow();
-    this.taskService.signal
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.showTasksOnModalWindow();
-      })
+    this.taskService.state$.pipe(map((state) => state[this.selectedDate])).subscribe((state) => this.tasksForDate = state);
   }
 
   onCheckBoxChange(date: string, taskId: string) {
@@ -72,11 +67,6 @@ export class TaskModalComponent {
 
   addTask() {
     if (this.inputValue.trim() !== '') this.taskService.addTasks(this.selectedDate, this.inputValue);
-    this.showTasksOnModalWindow();
-  }
-
-  showTasksOnModalWindow() {
-    this.tasksForDate = [...this.taskService.getTasksForDate(this.selectedDate)];
   }
 
   deleteTask(date: string, taskId: string) {

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Task} from '../models/task.model';
-import {Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 
 const STORAGE_KEY = 'todo-calendar-data';
 
@@ -12,12 +12,12 @@ export class TaskService {
   constructor() {
   }
 
-  public signal = new Subject<void>();
+  private stateSubject = new BehaviorSubject<{ [date: string]: Task[] }>({});
+  readonly state$ = this.stateSubject.asObservable();
 
   getTasksForDate(date: string): Task[] {
     const allData = this._loadFromStorage();
     const taskForDate = allData[date];
-    console.log(taskForDate);
     return taskForDate || [];
   }
 
@@ -34,6 +34,13 @@ export class TaskService {
       date: date
     }
 
+    let clone = Object.assign({}, this.stateSubject.value);
+    let existing = clone[date] ?? [];
+    existing = [...existing, newTask];
+    let nextState = Object.assign(clone, {[date]: existing})
+
+    this.stateSubject.next(nextState);
+
     const tasksForDate = this.getTasksForDate(date);
 
     tasksForDate.unshift(newTask);
@@ -42,15 +49,20 @@ export class TaskService {
   }
 
   toggleTaskCompletion(date: string, taskId: string) {
-    const allData = this.getTasksForDate(date);
+    const currentState = this.stateSubject.value;
+    const tasksForDate = currentState[date] ?? [];
 
-    const taskToUpdate = allData.find((task) => task.id === taskId);
+    const updateTasks = tasksForDate.map((task) => task.id === taskId ? {
+      ...task,
+      isCompleted: !task.isCompleted
+    } : task)
 
-    if (taskToUpdate) {
-      taskToUpdate.isCompleted = !taskToUpdate.isCompleted;
-
-      this.saveForDate(date, allData)
+    const newState = {
+      ...currentState,
+      [date]: updateTasks
     }
+
+    this.stateSubject.next(newState);
   }
 
   saveForDate(date: string, tasks: Task[]) {
@@ -63,8 +75,8 @@ export class TaskService {
     } else {
       allDate[date] = tasks;
     }
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(allDate));
-    this.signal.next();
   }
 
   deleteTask(date: string, taskId: string) {
@@ -74,5 +86,8 @@ export class TaskService {
     if (updateTasks.length !== allData.length) {
       this.saveForDate(date, updateTasks)
     }
+    let newState = Object.assign({}, this.stateSubject.value);
+    newState[date] = updateTasks;
+    this.stateSubject.next(newState);
   }
 }

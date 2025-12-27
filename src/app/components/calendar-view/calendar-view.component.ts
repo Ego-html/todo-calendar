@@ -21,9 +21,6 @@ export class CalendarViewComponent {
 
   ngOnInit() {
     this.createCalendarDates();
-    this.taskService.signal.subscribe(() => {
-      this.createCalendarDates()
-    })
   }
 
   days: { date: string, tasksCount: number } [] = [];
