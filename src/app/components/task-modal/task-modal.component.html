@@ -2,23 +2,113 @@
   <div class="modal-window" (click)="$event.stopPropagation()">
     <h1 id="modal-title">{{ title }}</h1>
     <h2>Tasks for {{ selectedDate }}</h2>
-    <div *ngFor="let obj of tasksForDate">
-      <input
-        type="checkbox"
-        id="check-box"
-        [checked]="obj.isCompleted"
-        (change) = "onCheckBoxChange(obj.date, obj.id)"
-      >
-      <label for="check-box">{{ obj.text }}</label>
-      <button class="delete-task" (click)="deleteTask(obj.date, obj.id)">X</button>
-    </div>
+    <!--    Parent subscribes to the child’s event. subscribes to the child’s event. $event contains the emitted payload-->
+    <app-tasks-for-date
+      [tasksForDate]="tasksForDate"
+      (newItemEvent)="deleteTask($event)"
+      (checkBox)="onCheckBoxChange($event)">
+    </app-tasks-for-date>
+
     <div class="tasks-list">
       Place for out tasks...
     </div>
-    <div class="new-task">
-      <input type="text" placeholder="Enter your task" [(ngModel)]='inputValue'>
-      <button class="add-task" (click)="addTask()">Save</button>
-      <button class="close-btn" (click)="closeModal()">X</button>
-    </div>
+    <!--    Template-driven form-->
+    <!--    <form #myTemplateForm="ngForm" (ngSubmit)="addTask()">-->
+    <!--      <div class="new-task">-->
+
+    <!--        <input-->
+    <!--          type="text"-->
+    <!--          placeholder="Enter your task"-->
+    <!--          name="task_input"-->
+    <!--          [(ngModel)]="inputValue"-->
+    <!--          required-->
+    <!--          minlength="3"-->
+    <!--          #taskCtrl="ngModel"-->
+
+    <!--        />-->
+
+    <!--        <div *ngIf="taskCtrl.invalid && taskCtrl.touched">-->
+    <!--          <small *ngIf="taskCtrl.errors?.['required']">-->
+    <!--            Task is required-->
+    <!--          </small>-->
+    <!--          <small *ngIf="taskCtrl.errors?.['minlength']">-->
+    <!--            Task must be at least 3 characters long-->
+    <!--          </small>-->
+    <!--        </div>-->
+
+    <!--        <div>-->
+    <!--          <label for="quantity">Quantity (between 1 and 5)</label>-->
+    <!--          <input-->
+    <!--            type="number"-->
+    <!--            id="quantity"-->
+    <!--            name="quantity"-->
+    <!--            required-->
+    <!--            min="1"-->
+    <!--            max="5"-->
+    <!--            [(ngModel)]="quantity"-->
+    <!--            #priorityCtrl="ngModel"-->
+    <!--          >-->
+    <!--        </div>-->
+
+    <!--        <div *ngIf="priorityCtrl.invalid && priorityCtrl.touched">-->
+    <!--          <small *ngIf="priorityCtrl.errors?.['required']">-->
+    <!--            Quantity is required-->
+    <!--          </small>-->
+    <!--          <small *ngIf="priorityCtrl.errors?.['min']">-->
+    <!--            Task must be at least 1 character long-->
+    <!--          </small>-->
+    <!--          <small *ngIf="priorityCtrl.errors?.['max']">-->
+    <!--            Task limit is 5-->
+    <!--          </small>-->
+    <!--        </div>-->
+
+    <!--        <button-->
+    <!--          class="add-task"-->
+    <!--          type="submit"-->
+    <!--          [disabled]="myTemplateForm.invalid || quantity === null">-->
+    <!--          Save-->
+    <!--        </button>-->
+
+    <!--        <button-->
+    <!--          type="button"-->
+    <!--          class="close-btn"-->
+    <!--          (click)="closeModal()">-->
+    <!--          X-->
+    <!--        </button>-->
+
+    <!--      </div>-->
+    <!--    </form>-->
+    <!--    <form [formGroup]="formdata" (ngSubmit)="addTask()>-->
+    <!--   -->
+    <!--    </form>-->
+    <form [formGroup]="myReactiveForm" (ngSubmit)="addTask()">
+      <input type="text" placeholder="Enter to your task"
+             formControlName="name"
+      >
+      <small *ngIf="myReactiveForm.get('name')?.hasError('required') && myReactiveForm.get('name')?.touched">
+        Task is required
+      </small>
+      <small *ngIf="myReactiveForm.get('name')?.hasError('minlength')">Task must be at least 3 character long</small>
+      <label for="quantity"></label>
+      <input type="number" formControlName="quantity" id="quantity">
+      <small *ngIf="myReactiveForm.get('quantity')?.hasError('required')">Quantity is required</small>
+      <small *ngIf="myReactiveForm.get('quantity')?.hasError('min')">
+        Minimum value is 1
+      </small>
+      <small *ngIf="myReactiveForm.get('quantity')?.hasError('max')">
+        Maximum value is 5
+      </small>
+
+      <button class="add-task" [disabled] = 'myReactiveForm.invalid'>
+        Save
+      </button>
+
+      <button
+        type="button"
+        class="close-btn"
+        (click)="closeModal()">
+        X
+      </button>
+    </form>
   </div>
 </div>

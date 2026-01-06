@@ -1,0 +1,10 @@
+<div *ngFor="let obj of tasksForDate">
+  <input
+    type="checkbox"
+    id="check-box"
+    [checked]="obj.isCompleted"
+    (change)="onCheckBoxChange(obj.date, obj.id)"
+  >
+  <label for="check-box">{{ obj.text }}</label>
+  <button class="delete-task" (click)="deleteTask(obj.date, obj.id)">X</button>
+</div>

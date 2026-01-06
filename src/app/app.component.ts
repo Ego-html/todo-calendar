@@ -5,6 +5,7 @@ import {TaskModalComponent} from "./components/task-modal/task-modal.component";
 import {NgIf} from "@angular/common";
 import {ModalService} from "./services/modal.service";
 import {ModalState} from "./models/modal-state";
+import {of} from "rxjs";
 
 @Component({
   selector: 'app-root',
