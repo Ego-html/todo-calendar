@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from "../../services/modal.service";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {FormGroup, FormControl, FormArray} from '@angular/forms';
 import {TaskService} from "../../services/task.service";
@@ -9,6 +8,7 @@ import {BehaviorSubject, catchError, combineLatest, filter, finalize, map, Subje
 import {of} from "rxjs";
 import {throwError} from 'rxjs';
 import {TasksForDateComponent} from "../tasks-for-date/tasks-for-date.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-task-modal',
@@ -35,13 +35,12 @@ export class TaskModalComponent {
     quantity: new FormControl<number>(1, {nonNullable: true, validators: [Validators.required, Validators.min(1), Validators.max(5)]})
   });
 
-  constructor(private modalService: ModalService, private taskService: TaskService) {
-
-  }
+  constructor(private taskService: TaskService, private router: Router) {}
 
   destroy$ = new Subject<void>();
 
   ngOnInit() {
+
     document.addEventListener('keydown', this.handleKeyPress);
     // combineLatest
     // combineLatest([this.taskService.state$, this.selectedDate$]).pipe(finalize(() => console.log('Modal window is closed')), map(([state, date]) => state[date] ?? []), takeUntil(this.destroy$)).subscribe(task => this.tasksForDate = task);
@@ -122,7 +121,7 @@ export class TaskModalComponent {
   }
 
   closeModal() {
-    this.modalService.closeModal();
+    this.router.navigate(['/calendar', '2025-09']);
   }
 
   addTask() {

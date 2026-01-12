@@ -3,7 +3,6 @@ import {RouterOutlet} from '@angular/router';
 import {CalendarViewComponent} from "./components/calendar-view/calendar-view.component";
 import {TaskModalComponent} from "./components/task-modal/task-modal.component";
 import {NgIf} from "@angular/common";
-import {ModalService} from "./services/modal.service";
 import {ModalState} from "./models/modal-state";
 import {of} from "rxjs";
 
@@ -17,22 +16,5 @@ import {of} from "rxjs";
 
 export class AppComponent {
   title = 'Todo-calendar';
-
-  constructor(private modalService: ModalService) {
-  }
-
-  isModalOpen = false;
-  selectedDate = '';
-
-  ngOnInit() {
-    this.modalService.modal$.subscribe((value: ModalState) => {
-      this.isModalOpen = value.isOpen
-      this.selectedDate = value.date;
-    })
-  }
-
-  closeModal() {
-    this.isModalOpen = false;
-  }
 }
 

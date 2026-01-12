@@ -90,7 +90,10 @@
       </small>
       <small *ngIf="myReactiveForm.get('name')?.hasError('minlength')">Task must be at least 3 character long</small>
       <label for="quantity"></label>
-      <input type="number" formControlName="quantity" id="quantity">
+      <input
+        type="number"
+        formControlName="quantity"
+        id="quantity">
       <small *ngIf="myReactiveForm.get('quantity')?.hasError('required')">Quantity is required</small>
       <small *ngIf="myReactiveForm.get('quantity')?.hasError('min')">
         Minimum value is 1

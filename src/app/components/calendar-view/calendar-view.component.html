@@ -2,7 +2,13 @@
   <app-day-cell
     *ngFor="let day of days"
     [dayDate]="day.date"
+    [month] = "day.month"
+    [year] = 'day.year'
+    [day]="day.day"
     [tasksCount]="day.tasksCount"
   >
   </app-day-cell>
+  @if (selectedDateForModal) {
+    <app-task-modal [selectedDate]="selectedDateForModal"></app-task-modal>
+  }
 </div>

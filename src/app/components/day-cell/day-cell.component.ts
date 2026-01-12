@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgIf} from "@angular/common";
-import {ModalService} from "../../services/modal.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-day-cell',
@@ -13,9 +13,12 @@ import {ModalService} from "../../services/modal.service";
 })
 export class DayCellComponent {
   @Input() dayDate: string = '';
+  @Input() year: number = 0;
+  @Input() month: number = 0;
+  @Input() day: number = 0;
   @Input() tasksCount: number = 0;
 
-  constructor(private modalService: ModalService) {
+  constructor(private router: Router) {
   }
 
   get dayNumber(): number {
@@ -23,6 +26,11 @@ export class DayCellComponent {
   }
 
   onDayClick() {
-    this.modalService.openModal(this.dayDate);
+    const monthStr = (this.month + 1).toString().padStart(2, '0');
+    const dayStr = this.day.toString().padStart(2, '0');
+    const fullDate = `${this.year}-${monthStr}-${dayStr}`;
+
+    this.router.navigate(['/calendar', fullDate])
+    // this.modalService.openModal(this.dayDate);
   }
 }
