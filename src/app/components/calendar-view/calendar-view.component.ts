@@ -3,8 +3,8 @@ import {DayCellComponent} from "../day-cell/day-cell.component";
 import {TaskService} from "../../services/task.service";
 import {NgForOf} from "@angular/common";
 import { ActivatedRoute } from '@angular/router';
-import {Routes, RouterModule} from '@angular/router';
 import {TaskModalComponent} from "../task-modal/task-modal.component";
+import {TodayButtonComponent} from "../today-button/today-button/today-button.component";
 
 
 @Component({
@@ -13,7 +13,8 @@ import {TaskModalComponent} from "../task-modal/task-modal.component";
   imports: [
     DayCellComponent,
     NgForOf,
-    TaskModalComponent
+    TaskModalComponent,
+    TodayButtonComponent
   ],
   templateUrl: './calendar-view.component.html',
   styleUrl: './calendar-view.component.css'
@@ -41,8 +42,8 @@ export class CalendarViewComponent {
 
   createCalendarDates() {
     this.days = [];
-    const year: number = 2025;
-    const month: number = 8;
+    const year: number = 2026;
+    const month: number = 0;
     let day = 1;
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();

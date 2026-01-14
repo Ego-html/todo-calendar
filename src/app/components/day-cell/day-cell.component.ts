@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {Router} from "@angular/router";
+import {TodayServiceService} from "../../services/today-service.service";
 
 @Component({
   selector: 'app-day-cell',
@@ -18,6 +19,10 @@ export class DayCellComponent {
   @Input() day: number = 0;
   @Input() tasksCount: number = 0;
 
+  state = inject(TodayServiceService);
+
+  todayDay = this.state.getTodayDay();
+
   constructor(private router: Router) {
   }
 
@@ -29,8 +34,6 @@ export class DayCellComponent {
     const monthStr = (this.month + 1).toString().padStart(2, '0');
     const dayStr = this.day.toString().padStart(2, '0');
     const fullDate = `${this.year}-${monthStr}-${dayStr}`;
-
     this.router.navigate(['/calendar', fullDate])
-    // this.modalService.openModal(this.dayDate);
   }
 }

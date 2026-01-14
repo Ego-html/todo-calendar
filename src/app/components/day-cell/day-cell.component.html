@@ -1,6 +1,6 @@
 <div class="cell-date" (click)="onDayClick()">
 <div class="day-number">{{ dayNumber }}</div>
-<div class="tasks-counter">
+<div class="tasks-counter" [class.today] = "dayDate === todayDay()">
   {{dayDate}} {{ tasksCount }} task{{ tasksCount != 1 ? 's' : '' }}
 </div>
 </div>
